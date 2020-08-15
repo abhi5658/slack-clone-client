@@ -11,11 +11,20 @@ const allUserQuery = gql`
 `;
 
 const Home = () => {
-  const { loading, error, data } = useQuery(allUserQuery);
-  if (loading) return 'Loading...';
+  const {
+    loading,
+    error,
+    data: { allUsers = [] } = { allUsers: [] },
+  } = useQuery(allUserQuery);
+
+  if (loading) return 'Loading users...';
   if (error) return `Error! ${error.message}`;
-  console.log(data);
-  return data.allUsers.map((u) => <h1 key={u.id}>{u.email}</h1>);
+
+  return allUsers.map((u) => (
+    <h1 id={u.id} key={u.id}>
+      {u.email}
+    </h1>
+  ));
 };
 
 export default Home;
